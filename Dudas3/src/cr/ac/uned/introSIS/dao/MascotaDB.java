@@ -6,6 +6,7 @@ package cr.ac.uned.introSIS.dao;
 
 import cr.ac.uned.introSIS.dominio.Mascota;
 import java.sql.*;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -36,6 +37,27 @@ public class MascotaDB {
         pst.setString(4, nuevaMascota.getSexo());
         pst.setInt(5, nuevaMascota.getEdad());
         pst.execute();
+    }
+    
+    public ArrayList<Mascota> obtenerMascotas() throws SQLException{
+        ArrayList<Mascota> mascotas=new ArrayList<Mascota>();
+        
+        String sentencia="SELECT * FROM ADMINSIS.MASCOTAS";
+        PreparedStatement pst=conexion.prepareStatement(sentencia);
+        ResultSet rs=pst.executeQuery();
+        
+        while(rs.next()){
+            Mascota mascotaObtenida=new Mascota();
+            mascotaObtenida.setId(rs.getInt("ID"));
+            mascotaObtenida.setNombre(rs.getString("NOMBRE"));
+            mascotaObtenida.setEspecie(rs.getString("ESPECIE"));
+            mascotaObtenida.setColor(rs.getString("COLOR"));
+            mascotaObtenida.setSexo(rs.getString("SEXO"));
+            mascotaObtenida.setEdad(rs.getInt("EDAD"));
+            mascotas.add(mascotaObtenida);
+        }
+        
+        return mascotas;
     }
     
 }
